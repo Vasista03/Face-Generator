@@ -119,7 +119,13 @@ export default function Home() {
       if (!response.ok) {
         const errorMessage = data.error || "Error in Gemini API";
         const details = data.details ? JSON.stringify(data.details, null, 2) : "";
-        throw new Error(`${errorMessage}\n${details}`);
+        const statusText =
+          response.status === 429
+            ? "Gemini quota exceeded. Please wait a minute or check billing/plan."
+            : "Gemini request failed.";
+        setGenerationError(`${statusText}\n${errorMessage}${details ? `\n${details}` : ""}`);
+        setStep("verification");
+        return;
       }
 
       // Get array of images
@@ -353,6 +359,20 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-900/60 border border-gray-800 rounded-xl p-4">
               <div>
                 <label className="block text-xs text-gray-500 mb-1">
+                  Gender
+                </label>
+                <input
+                  type="text"
+                  className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  value={features.gender ?? ""}
+                  onChange={(e) =>
+                    setFeatures((prev) => ({ ...prev, gender: e.target.value }))
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">
                   Face shape
                 </label>
                 <input
@@ -381,6 +401,20 @@ export default function Home() {
 
               <div>
                 <label className="block text-xs text-gray-500 mb-1">
+                  Skin texture
+                </label>
+                <input
+                  type="text"
+                  className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  value={features.face?.skinTexture ?? ""}
+                  onChange={(e) =>
+                    updateFeature("face", "skinTexture", e.target.value)
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">
                   Eye color
                 </label>
                 <input
@@ -395,6 +429,48 @@ export default function Home() {
 
               <div>
                 <label className="block text-xs text-gray-500 mb-1">
+                  Eye spacing
+                </label>
+                <input
+                  type="text"
+                  className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  value={features.eyes?.spacing ?? ""}
+                  onChange={(e) =>
+                    updateFeature("eyes", "spacing", e.target.value)
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">
+                  Eye size
+                </label>
+                <input
+                  type="text"
+                  className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  value={features.eyes?.size ?? ""}
+                  onChange={(e) =>
+                    updateFeature("eyes", "size", e.target.value)
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">
+                  Eye shape
+                </label>
+                <input
+                  type="text"
+                  className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  value={features.eyes?.shape ?? ""}
+                  onChange={(e) =>
+                    updateFeature("eyes", "shape", e.target.value)
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">
                   Eyebrow type
                 </label>
                 <input
@@ -403,6 +479,20 @@ export default function Home() {
                   value={features.eyebrows?.type ?? ""}
                   onChange={(e) =>
                     updateFeature("eyebrows", "type", e.target.value)
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs text-gray-500 mb-1">
+                  Eyebrow density
+                </label>
+                <input
+                  type="text"
+                  className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  value={features.eyebrows?.density ?? ""}
+                  onChange={(e) =>
+                    updateFeature("eyebrows", "density", e.target.value)
                   }
                 />
               </div>

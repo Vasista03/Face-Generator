@@ -18,9 +18,8 @@ export async function POST(req: Request) {
     // Initialize client according to official SDK
     const ai = new GoogleGenAI({ apiKey });
 
-    // Use the correct model for image generation
-    // Confirmed available model from list
-    const modelName = "gemini-2.0-flash-exp-image-generation";
+    // Image-capable model + response mime type for inline image data
+    const modelName = "gemini-2.0-flash-exp";
     
     console.log(`🎨 Using model: ${modelName}`);
     console.log(`📝 Prompt length: ${prompt.length} characters`);
@@ -38,9 +37,9 @@ export async function POST(req: Request) {
               parts: [{ text: prompt }]
             }
           ],
-          config: {
-            responseModalities: ["image"]
-          }
+          generationConfig: {
+            responseMimeType: "image/png",
+          },
         });
       });
 
@@ -112,3 +111,4 @@ export async function POST(req: Request) {
     );
   }
 }
+
