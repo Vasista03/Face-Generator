@@ -364,6 +364,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Male, Female, Non-binary"
                   value={features.gender ?? ""}
                   onChange={(e) =>
                     setFeatures((prev) => ({ ...prev, gender: e.target.value }))
@@ -378,6 +379,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Oval, square, diamond, heart-shaped"
                   value={features.face?.shape ?? ""}
                   onChange={(e) =>
                     updateFeature("face", "shape", e.target.value)
@@ -392,6 +394,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Fair, medium tan, deep brown, pale"
                   value={features.face?.skinTone ?? ""}
                   onChange={(e) =>
                     updateFeature("face", "skinTone", e.target.value)
@@ -406,6 +409,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Smooth, weathered, freckled, scarred"
                   value={features.face?.skinTexture ?? ""}
                   onChange={(e) =>
                     updateFeature("face", "skinTexture", e.target.value)
@@ -420,6 +424,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Brown, hazel, blue, green"
                   value={features.eyes?.color ?? ""}
                   onChange={(e) =>
                     updateFeature("eyes", "color", e.target.value)
@@ -434,6 +439,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Close-set, average, wide-set"
                   value={features.eyes?.spacing ?? ""}
                   onChange={(e) =>
                     updateFeature("eyes", "spacing", e.target.value)
@@ -448,6 +454,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Large, medium, small"
                   value={features.eyes?.size ?? ""}
                   onChange={(e) =>
                     updateFeature("eyes", "size", e.target.value)
@@ -462,6 +469,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Almond, round, hooded, downturned"
                   value={features.eyes?.shape ?? ""}
                   onChange={(e) =>
                     updateFeature("eyes", "shape", e.target.value)
@@ -476,6 +484,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Thick, arched, straight, fine"
                   value={features.eyebrows?.type ?? ""}
                   onChange={(e) =>
                     updateFeature("eyebrows", "type", e.target.value)
@@ -490,6 +499,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Dense, medium, light"
                   value={features.eyebrows?.density ?? ""}
                   onChange={(e) =>
                     updateFeature("eyebrows", "density", e.target.value)
@@ -505,6 +515,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Small and upturned, medium, large"
                   value={features.nose?.size ?? ""}
                   onChange={(e) =>
                     updateFeature("nose", "size", e.target.value)
@@ -519,6 +530,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Straight, aquiline, flat, bulbous"
                   value={features.nose?.shape ?? ""}
                   onChange={(e) =>
                     updateFeature("nose", "shape", e.target.value)
@@ -534,6 +546,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Wide, medium, narrow"
                   value={features.mouth?.size ?? ""}
                   onChange={(e) =>
                     updateFeature("mouth", "size", e.target.value)
@@ -548,6 +561,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Thin, medium, full"
                   value={features.mouth?.lips ?? ""}
                   onChange={(e) =>
                     updateFeature("mouth", "lips", e.target.value)
@@ -563,6 +577,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Black, chestnut, blonde"
                   value={features.hair?.color ?? ""}
                   onChange={(e) =>
                     updateFeature("hair", "color", e.target.value)
@@ -577,6 +592,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Buzz cut, shoulder-length, long"
                   value={features.hair?.length ?? ""}
                   onChange={(e) =>
                     updateFeature("hair", "length", e.target.value)
@@ -591,6 +607,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Thick, medium, sparse"
                   value={features.hair?.density ?? ""}
                   onChange={(e) =>
                     updateFeature("hair", "density", e.target.value)
@@ -605,6 +622,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Wavy, curly, straight, mohawk, slicked back"
                   value={features.hair?.style ?? ""}
                   onChange={(e) =>
                     updateFeature("hair", "style", e.target.value)
@@ -620,6 +638,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Lean, athletic, muscular, heavyset"
                   value={features.body?.build ?? ""}
                   onChange={(e) =>
                     updateFeature("body", "build", e.target.value)
@@ -634,6 +653,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Upright, relaxed, hunched"
                   value={features.body?.posture ?? ""}
                   onChange={(e) =>
                     updateFeature("body", "posture", e.target.value)
@@ -648,6 +668,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Matching face tone, tanned, pale"
                   value={features.body?.tone ?? ""}
                   onChange={(e) =>
                     updateFeature("body", "tone", e.target.value)
@@ -662,6 +683,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: ~80kg, ~110kg"
                   value={features.body?.weight ?? ""}
                   onChange={(e) =>
                     updateFeature("body", "weight", e.target.value)
@@ -677,6 +699,7 @@ export default function Home() {
                 <input
                   type="text"
                   className="w-full bg-black/40 border border-gray-800 rounded px-2 py-1 text-sm text-gray-200"
+                  placeholder="Ex: Tactical vest, hoodie, suit, casual shirt"
                   value={features.clothing ?? ""}
                   onChange={(e) =>
                     // Update the top-level clothing property directly
