@@ -1,4 +1,4 @@
-﻿import { PortraitFeatures } from "../services/nlpService";
+import { PortraitFeatures } from "../services/nlpService";
 
 /**
  * Generates a detailed prompt for Gemini based on extracted features.
@@ -12,56 +12,56 @@ export const generateGeminiPrompt = (features: PortraitFeatures): string => {
   };
 
   const extras =
-    features.otrasCaracteristicas && features.otrasCaracteristicas.trim().length
-      ? features.otrasCaracteristicas.trim()
+    features.otherFeatures && features.otherFeatures.trim().length
+      ? features.otherFeatures.trim()
       : null;
 
   return `
 Generate a realistic portrait based on the following physical description.
 
-Gender: ${getFeature(features.genero)}
+Gender: ${getFeature(features.gender)}
 
 Face:
-- Face shape: ${getFeature(features.rostro?.forma)}
-- Skin tone: ${getFeature(features.rostro?.tonoPiel)}
-- Skin texture: ${getFeature(features.rostro?.texturaPiel)}
+- Face shape: ${getFeature(features.face?.shape)}
+- Skin tone: ${getFeature(features.face?.skinTone)}
+- Skin texture: ${getFeature(features.face?.skinTexture)}
 
 Eyes:
-- Eye spacing: ${getFeature(features.ojos?.espacio)}
-- Size: ${getFeature(features.ojos?.tamaño)}
-- Shape: ${getFeature(features.ojos?.forma)}
-- Color: ${getFeature(features.ojos?.color)}
+- Eye spacing: ${getFeature(features.eyes?.spacing)}
+- Size: ${getFeature(features.eyes?.size)}
+- Shape: ${getFeature(features.eyes?.shape)}
+- Color: ${getFeature(features.eyes?.color)}
 
 Eyebrows:
-- Density: ${getFeature(features.cejas?.densidad)}
-- Type: ${getFeature(features.cejas?.tipo)}
+- Density: ${getFeature(features.eyebrows?.density)}
+- Type: ${getFeature(features.eyebrows?.type)}
 
 Nose:
-- Size: ${getFeature(features.nariz?.tamaño)}
-- Shape: ${getFeature(features.nariz?.forma)}
+- Size: ${getFeature(features.nose?.size)}
+- Shape: ${getFeature(features.nose?.shape)}
 
 Mouth:
-- Size: ${getFeature(features.boca?.tamaño)}
-- Lips: ${getFeature(features.boca?.labios)}
+- Size: ${getFeature(features.mouth?.size)}
+- Lips: ${getFeature(features.mouth?.lips)}
 
 Hair: 
-- Color: ${getFeature(features.cabello?.color)}
-- Length: ${getFeature(features.cabello?.largo)}
-- Density: ${getFeature(features.cabello?.densidad)}
-- Style or hairstyle: ${getFeature(features.cabello?.estilo)}
+- Color: ${getFeature(features.hair?.color)}
+- Length: ${getFeature(features.hair?.length)}
+- Density: ${getFeature(features.hair?.density)}
+- Style or hairstyle: ${getFeature(features.hair?.style)}
 
 Body: 
-- Build: ${getFeature(features.cuerpo?.complexion)}
-- Posture: ${getFeature(features.cuerpo?.postura)}
-- Skin tone: ${getFeature(features.cuerpo?.tono)}
-- Weight: ${getFeature(features.cuerpo?.peso)}
+- Build: ${getFeature(features.body?.build)}
+- Posture: ${getFeature(features.body?.posture)}
+- Skin tone: ${getFeature(features.body?.tone)}
+- Weight: ${getFeature(features.body?.weight)}
 
 Clothing: 
-- Clothing type: ${getFeature(features.ropa)}
+- Clothing type: ${getFeature(features.clothing)}
 
 ${
   extras
-    ? `Special features or additional details:\\n- ${extras}\\n`
+    ? `Special features or additional details:\n- ${extras}\n`
     : ""
 }
 

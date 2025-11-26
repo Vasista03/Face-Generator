@@ -1,9 +1,9 @@
 /**
- * Servicio para manejar la comunicación con Wolfram Cloud.
+ * Service to handle communication with Wolfram Cloud.
  */
 
 // -----------------------------------------------------------------------------
-// CONFIGURACIÓN
+// CONFIGURATION
 // -----------------------------------------------------------------------------
 
 const WOLFRAM_CLOUD_URL =
@@ -11,33 +11,49 @@ const WOLFRAM_CLOUD_URL =
   "https://www.wolframcloud.com/obj/achavezt1900/forensicSketchAPI";
 
 // -----------------------------------------------------------------------------
-// TIPOS
+// TYPES
 // -----------------------------------------------------------------------------
 
 export interface WolframFeatures {
-  rostro?: {
-    forma?: string | null;
-    tonoPiel?: string | null;
-    texturaPiel?: string | null;
+  gender?: string | null;
+  face?: {
+    shape?: string | null;
+    skinTone?: string | null;
+    skinTexture?: string | null;
   };
-  ojos?: {
-    tamaño?: string | null;
-    forma?: string | null;
+  eyes?: {
+    size?: string | null;
+    shape?: string | null;
     color?: string | null;
+    spacing?: string | null;
   };
-  cejas?: {
-    tipo?: string | null;
+  eyebrows?: {
+    type?: string | null;
+    density?: string | null;
   };
-  nariz?: {
-    tamaño?: string | null;
-    forma?: string | null;
+  nose?: {
+    size?: string | null;
+    shape?: string | null;
   };
-  boca?: {
-    tamaño?: string | null;
-    labios?: string | null;
+  mouth?: {
+    size?: string | null;
+    lips?: string | null;
   };
-  otrasCaracteristicas?: string | null;
-  [key: string]: any;
+  hair?: {
+    color?: string | null;
+    length?: string | null;
+    density?: string | null;
+    style?: string | null;
+  };
+  body?: {
+    build?: string | null;
+    posture?: string | null;
+    tone?: string | null;
+    weight?: string | null;
+  };
+  clothing?: string | null;
+  otherFeatures?: string | null;
+  [key: string]: unknown;
 }
 
 export interface WolframResponse {
@@ -46,18 +62,102 @@ export interface WolframResponse {
   processedText?: string;
   features?: WolframFeatures;
   error?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
+const pickFrom =
+  (primary: string, fallback?: string) =>
+  (obj: Record<string, unknown> = {}): string | null | undefined => {
+    const primaryValue = obj[primary];
+    if (primaryValue !== undefined) return primaryValue as string | null;
+    if (fallback && obj[fallback] !== undefined) return obj[fallback] as string | null;
+    return undefined;
+  };
+
+const normalizeFeatures = (raw: unknown): WolframFeatures => {
+  if (!raw || typeof raw !== "object") return {};
+
+  const source =
+    (raw as Record<string, unknown>).features &&
+    typeof (raw as Record<string, unknown>).features === "object"
+      ? ((raw as Record<string, unknown>).features as Record<string, unknown>)
+      : (raw as Record<string, unknown>);
+
+  const faceSource = (source.face as Record<string, unknown>) ?? (source.rostro as Record<string, unknown>) ?? {};
+  const eyesSource = (source.eyes as Record<string, unknown>) ?? (source.ojos as Record<string, unknown>) ?? {};
+  const eyebrowsSource =
+    (source.eyebrows as Record<string, unknown>) ?? (source.cejas as Record<string, unknown>) ?? {};
+  const noseSource = (source.nose as Record<string, unknown>) ?? (source.nariz as Record<string, unknown>) ?? {};
+  const mouthSource = (source.mouth as Record<string, unknown>) ?? (source.boca as Record<string, unknown>) ?? {};
+  const hairSource = (source.hair as Record<string, unknown>) ?? (source.cabello as Record<string, unknown>) ?? {};
+  const bodySource = (source.body as Record<string, unknown>) ?? (source.cuerpo as Record<string, unknown>) ?? {};
+
+  return {
+    gender: (source.gender as string | null) ?? (source.genero as string | null) ?? null,
+    face: {
+      shape: pickFrom("shape", "forma")(faceSource) ?? null,
+      skinTone: pickFrom("skinTone", "tonoPiel")(faceSource) ?? null,
+      skinTexture: pickFrom("skinTexture", "texturaPiel")(faceSource) ?? null,
+    },
+    eyes: {
+      size:
+        pickFrom("size", "tama\u00f1o")(eyesSource) ??
+        pickFrom("size", "tamano")(eyesSource) ??
+        pickFrom("tama\u00f1o")(eyesSource) ??
+        pickFrom("tamano")(eyesSource) ??
+        null,
+      shape: pickFrom("shape", "forma")(eyesSource) ?? null,
+      color: pickFrom("color")(eyesSource) ?? null,
+      spacing: pickFrom("spacing", "espacio")(eyesSource) ?? null,
+    },
+    eyebrows: {
+      type: pickFrom("type", "tipo")(eyebrowsSource) ?? null,
+      density: pickFrom("density", "densidad")(eyebrowsSource) ?? null,
+    },
+    nose: {
+      size:
+        pickFrom("size", "tama\u00f1o")(noseSource) ??
+        pickFrom("size", "tamano")(noseSource) ??
+        pickFrom("tama\u00f1o")(noseSource) ??
+        pickFrom("tamano")(noseSource) ??
+        null,
+      shape: pickFrom("shape", "forma")(noseSource) ?? null,
+    },
+    mouth: {
+      size:
+        pickFrom("size", "tama\u00f1o")(mouthSource) ??
+        pickFrom("size", "tamano")(mouthSource) ??
+        pickFrom("tama\u00f1o")(mouthSource) ??
+        pickFrom("tamano")(mouthSource) ??
+        null,
+      lips: pickFrom("lips", "labios")(mouthSource) ?? null,
+    },
+    hair: {
+      color: pickFrom("color")(hairSource) ?? null,
+      length: pickFrom("length", "largo")(hairSource) ?? null,
+      density: pickFrom("density", "densidad")(hairSource) ?? null,
+      style: pickFrom("style", "estilo")(hairSource) ?? null,
+    },
+    body: {
+      build: pickFrom("build", "complexion")(bodySource) ?? null,
+      posture: pickFrom("posture", "postura")(bodySource) ?? null,
+      tone: pickFrom("tone", "tono")(bodySource) ?? null,
+      weight: pickFrom("weight", "peso")(bodySource) ?? null,
+    },
+    clothing: pickFrom("clothing", "ropa")(source) ?? null,
+    otherFeatures: pickFrom("otherFeatures", "otrasCaracteristicas")(source) ?? null,
+  };
+};
+
 // -----------------------------------------------------------------------------
-// FUNCIÓN PRINCIPAL
+// MAIN FUNCTION
 // -----------------------------------------------------------------------------
 
 export const analyzeTextWithWolfram = async (
   text: string
 ): Promise<WolframResponse> => {
   if (!text || text.trim() === "") {
-    console.warn("Intento de enviar texto vacío a Wolfram.");
+    console.warn("Attempted to send empty text to Wolfram.");
     return {};
   }
 
@@ -73,16 +173,17 @@ export const analyzeTextWithWolfram = async (
     });
 
     const result = await response.json();
+    const normalizedFeatures = normalizeFeatures(result);
 
-    console.log("Respuesta de Wolfram:", result); // 👈 para verificar qué llega
+    console.log("Wolfram response:", result);
 
     if (!response.ok) {
-      throw new Error(result?.error ?? "Error desconocido en Wolfram Cloud");
+      throw new Error(result?.error ?? "Unknown error from Wolfram Cloud");
     }
 
-    return result;
+    return { ...result, features: normalizedFeatures };
   } catch (error) {
-    console.error("Error en la conexión con Wolfram Cloud:", error);
+    console.error("Error connecting to Wolfram Cloud:", error);
     return {
       error: String(error),
     };

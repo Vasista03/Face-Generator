@@ -1,29 +1,6 @@
-export interface PortraitFeatures {
-  genero?: string | null;
-  rostro?: {
-    forma?: string | null;
-    tonoPiel?: string | null;
-    texturaPiel?: string | null;
-  };
-  ojos?: {
-    tamaño?: string | null;
-    forma?: string | null;
-    color?: string | null;
-  };
-  cejas?: {
-    tipo?: string | null;
-  };
-  nariz?: {
-    tamaño?: string | null;
-    forma?: string | null;
-  };
-  boca?: {
-    tamaño?: string | null;
-    labios?: string | null;
-  };
-  otrasCaracteristicas?: string | null;
-  [key: string]: unknown;
-}
+import { WolframFeatures } from "./wolframService";
+
+export type PortraitFeatures = WolframFeatures;
 
 export interface NlpResponse {
   rawText?: string;
@@ -34,111 +11,112 @@ export interface NlpResponse {
 export const analyzeText = async (text: string): Promise<NlpResponse> => {
   const lowerText = text.toLowerCase();
   const features: PortraitFeatures = {
-    genero: null,
-    rostro: {},
-    ojos: {},
-    cejas: {},
-    nariz: {},
-    boca: {},
-    otrasCaracteristicas: null
+    gender: null,
+    face: {},
+    eyes: {},
+    eyebrows: {},
+    nose: {},
+    mouth: {},
+    hair: {},
+    body: {},
+    clothing: null,
+    otherFeatures: null,
   };
 
-  // Helper to check keywords
-  const has = (keywords: string[]) => keywords.some(k => lowerText.includes(k));
+  const has = (keywords: string[]) => keywords.some((k) => lowerText.includes(k));
 
-  // Género
-  if (has(["hombre", "masculino", "chico", "señor", "caballero"])) features.genero = "Hombre";
-  else if (has(["mujer", "femenino", "chica", "señora", "dama"])) features.genero = "Mujer";
-  else if (has(["niño"])) features.genero = "Niño";
-  else if (has(["niña"])) features.genero = "Niña";
+  // Gender
+  if (has(["man", "male", "guy", "gentleman"])) features.gender = "Male";
+  else if (has(["woman", "female", "lady"])) features.gender = "Female";
+  else if (has(["boy", "young boy"])) features.gender = "Boy";
+  else if (has(["girl", "young girl"])) features.gender = "Girl";
 
-  // Rostro
-  if (has(["redondo", "redonda", "cara redonda"])) features.rostro!.forma = "redondo";
-  else if (has(["ovalado", "ovalada", "cara ovalada"])) features.rostro!.forma = "ovalado";
-  else if (has(["cuadrado", "cuadrada", "cara cuadrada"])) features.rostro!.forma = "cuadrado";
-  else if (has(["alargado", "alargada", "cara alargada"])) features.rostro!.forma = "alargado";
-  else if (has(["triangular", "cara triangular"])) features.rostro!.forma = "triangular";
-  else if (has(["diamante", "cara diamante"])) features.rostro!.forma = "diamante";
+  // Face
+  if (has(["round face", "round"])) features.face!.shape = "round";
+  else if (has(["oval face", "oval"])) features.face!.shape = "oval";
+  else if (has(["square face", "square"])) features.face!.shape = "square";
+  else if (has(["long face", "elongated face"])) features.face!.shape = "elongated";
+  else if (has(["triangular face"])) features.face!.shape = "triangular";
+  else if (has(["diamond face", "diamond-shaped face"])) features.face!.shape = "diamond";
 
-  if (has(["piel clara", "tez clara", "blanco", "blanca", "güero", "güera"])) features.rostro!.tonoPiel = "claro";
-  else if (has(["piel oscura", "tez oscura", "negro", "negra", "afro"])) features.rostro!.tonoPiel = "oscuro";
-  else if (has(["moreno", "morena", "piel morena", "tez morena"])) features.rostro!.tonoPiel = "moreno";
-  else if (has(["bronceado", "bronceada"])) features.rostro!.tonoPiel = "bronceado";
-  else if (has(["pálido", "pálida"])) features.rostro!.tonoPiel = "pálido";
+  if (has(["fair skin", "light skin", "pale"])) features.face!.skinTone = "light";
+  else if (has(["dark skin", "black skin", "dark complexion"])) features.face!.skinTone = "dark";
+  else if (has(["brown skin", "medium skin", "tan"])) features.face!.skinTone = "medium brown";
+  else if (has(["olive skin"])) features.face!.skinTone = "olive";
 
-  // Ojos
-  if (has(["ojos azules", "ojo azul"])) features.ojos!.color = "azul";
-  else if (has(["ojos verdes", "ojo verde"])) features.ojos!.color = "verde";
-  else if (has(["ojos cafés", "ojo café", "ojos marrones", "ojo marrón", "ojos color miel"])) features.ojos!.color = "café";
-  else if (has(["ojos negros", "ojo negro"])) features.ojos!.color = "negro";
-  else if (has(["ojos grises", "ojo gris"])) features.ojos!.color = "gris";
-  else if (has(["ojos miel", "color miel"])) features.ojos!.color = "miel";
+  // Eyes
+  if (has(["blue eyes", "blue eye"])) features.eyes!.color = "blue";
+  else if (has(["green eyes", "green eye"])) features.eyes!.color = "green";
+  else if (has(["brown eyes", "brown eye"])) features.eyes!.color = "brown";
+  else if (has(["black eyes", "black eye"])) features.eyes!.color = "black";
+  else if (has(["gray eyes", "grey eyes"])) features.eyes!.color = "gray";
+  else if (has(["hazel eyes", "hazel"])) features.eyes!.color = "hazel";
 
-  if (has(["ojos grandes", "ojotes"])) features.ojos!.tamaño = "grande";
-  else if (has(["ojos pequeños", "ojos chicos", "ojitos"])) features.ojos!.tamaño = "pequeño";
-  
-  if (has(["ojos rasgados", "asiático"])) features.ojos!.forma = "rasgados";
-  else if (has(["ojos almendrados"])) features.ojos!.forma = "almendrados";
-  else if (has(["ojos redondos"])) features.ojos!.forma = "redondos";
-  else if (has(["ojos caídos"])) features.ojos!.forma = "caídos";
+  if (has(["big eyes", "large eyes"])) features.eyes!.size = "large";
+  else if (has(["small eyes", "little eyes"])) features.eyes!.size = "small";
 
-  // Cejas
-  if (has(["cejas pobladas", "cejas gruesas", "cejón", "cejona"])) features.cejas!.tipo = "pobladas";
-  else if (has(["cejas delgadas", "cejas finas"])) features.cejas!.tipo = "delgadas";
-  else if (has(["cejas arqueadas"])) features.cejas!.tipo = "arqueadas";
-  else if (has(["cejas rectas"])) features.cejas!.tipo = "rectas";
-  else if (has(["uniceja"])) features.cejas!.tipo = "uniceja";
+  if (has(["slanted eyes", "asian eyes"])) features.eyes!.shape = "slanted";
+  else if (has(["almond eyes", "almond-shaped eyes"])) features.eyes!.shape = "almond";
+  else if (has(["round eyes"])) features.eyes!.shape = "round";
+  else if (has(["droopy eyes", "downturned eyes"])) features.eyes!.shape = "droopy";
 
-  // Nariz
-  if (has(["nariz grande", "narizona", "narizón"])) features.nariz!.tamaño = "grande";
-  else if (has(["nariz pequeña", "nariz chica", "naricita"])) features.nariz!.tamaño = "pequeña";
-  else if (has(["nariz mediana"])) features.nariz!.tamaño = "mediana";
-  
-  if (has(["nariz aguileña", "nariz ganchuda"])) features.nariz!.forma = "aguileña";
-  else if (has(["nariz respingada", "nariz respingona"])) features.nariz!.forma = "respingada";
-  else if (has(["nariz chata", "nariz ancha"])) features.nariz!.forma = "chata";
-  else if (has(["nariz recta"])) features.nariz!.forma = "recta";
+  // Eyebrows
+  if (has(["thick eyebrows", "bushy eyebrows"])) features.eyebrows!.type = "bushy";
+  else if (has(["thin eyebrows", "fine eyebrows"])) features.eyebrows!.type = "thin";
+  else if (has(["arched eyebrows"])) features.eyebrows!.type = "arched";
+  else if (has(["straight eyebrows"])) features.eyebrows!.type = "straight";
+  else if (has(["unibrow"])) features.eyebrows!.type = "unibrow";
 
-  // Boca
-  if (has(["boca grande"])) features.boca!.tamaño = "grande";
-  else if (has(["boca pequeña", "boca chica"])) features.boca!.tamaño = "pequeña";
-  
-  if (has(["labios gruesos", "labios carnosos"])) features.boca!.labios = "gruesos";
-  else if (has(["labios delgados", "labios finos"])) features.boca!.labios = "delgados";
+  // Nose
+  if (has(["big nose", "large nose"])) features.nose!.size = "large";
+  else if (has(["small nose", "little nose"])) features.nose!.size = "small";
+  else if (has(["medium nose"])) features.nose!.size = "medium";
 
-  // Otras características
-  const extras = [];
-  if (has(["barba"])) extras.push("barba");
-  if (has(["bigote"])) extras.push("bigote");
-  if (has(["lentes", "gafas", "anteojos"])) extras.push("usa lentes");
-  if (has(["cicatriz"])) extras.push("cicatriz");
-  if (has(["tatuaje"])) extras.push("tatuaje");
-  if (has(["pecas"])) extras.push("pecas");
-  if (has(["lunar"])) extras.push("lunar");
-  if (has(["arrugas"])) extras.push("arrugas");
-  if (has(["barbilla redonda"])) extras.push("barbilla redonda");
-  if (has(["barbilla partida"])) extras.push("barbilla partida");
-  
-  // Cabello
-  if (has(["cabello largo", "pelo largo"])) extras.push("cabello largo");
-  if (has(["cabello corto", "pelo corto"])) extras.push("cabello corto");
-  if (has(["calvo", "pelón"])) extras.push("calvo");
-  if (has(["cabello rizado", "pelo chino", "rulos"])) extras.push("cabello rizado");
-  if (has(["cabello lacio", "pelo lacio"])) extras.push("cabello lacio");
-  if (has(["cabello ondulado", "pelo ondulado"])) extras.push("cabello ondulado");
-  
-  if (has(["cabello rubio", "pelo rubio", "güero"])) extras.push("cabello rubio");
-  if (has(["cabello negro", "pelo negro"])) extras.push("cabello negro");
-  if (has(["cabello castaño", "pelo castaño", "cabello café"])) extras.push("cabello castaño");
-  if (has(["cabello rojo", "pelirrojo"])) extras.push("cabello rojo");
-  if (has(["canas", "pelo canoso", "cabello canoso"])) extras.push("cabello canoso");
+  if (has(["aquiline nose", "hooked nose"])) features.nose!.shape = "aquiline";
+  else if (has(["upturned nose", "snub nose"])) features.nose!.shape = "upturned";
+  else if (has(["flat nose", "wide nose"])) features.nose!.shape = "flat";
+  else if (has(["straight nose"])) features.nose!.shape = "straight";
+
+  // Mouth
+  if (has(["big mouth", "wide mouth"])) features.mouth!.size = "large";
+  else if (has(["small mouth", "narrow mouth"])) features.mouth!.size = "small";
+
+  if (has(["full lips", "thick lips"])) features.mouth!.lips = "full";
+  else if (has(["thin lips", "narrow lips"])) features.mouth!.lips = "thin";
+
+  // Additional features
+  const extras: string[] = [];
+  if (has(["beard"])) extras.push("beard");
+  if (has(["mustache", "moustache"])) extras.push("mustache");
+  if (has(["glasses", "eyeglasses"])) extras.push("glasses");
+  if (has(["scar"])) extras.push("scar");
+  if (has(["tattoo"])) extras.push("tattoo");
+  if (has(["freckles"])) extras.push("freckles");
+  if (has(["mole"])) extras.push("mole");
+  if (has(["wrinkles"])) extras.push("wrinkles");
+  if (has(["round chin"])) extras.push("round chin");
+  if (has(["cleft chin"])) extras.push("cleft chin");
+
+  // Hair
+  if (has(["long hair"])) extras.push("long hair");
+  if (has(["short hair"])) extras.push("short hair");
+  if (has(["bald", "balding"])) extras.push("bald");
+  if (has(["curly hair", "curly"])) extras.push("curly hair");
+  if (has(["straight hair"])) extras.push("straight hair");
+  if (has(["wavy hair"])) extras.push("wavy hair");
+
+  if (has(["blonde hair", "blond hair"])) extras.push("blonde hair");
+  if (has(["black hair"])) extras.push("black hair");
+  if (has(["brown hair"])) extras.push("brown hair");
+  if (has(["red hair", "ginger hair"])) extras.push("red hair");
+  if (has(["gray hair", "grey hair"])) extras.push("gray hair");
 
   if (extras.length > 0) {
-    features.otrasCaracteristicas = extras.join(", ");
+    features.otherFeatures = extras.join(", ");
   }
 
   return {
     rawText: text,
-    features
+    features,
   };
 };

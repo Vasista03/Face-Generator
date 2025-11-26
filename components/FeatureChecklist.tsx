@@ -7,11 +7,11 @@ interface FeatureChecklistProps {
 }
 
 const REQUIRED_FEATURES = [
-  { path: 'rostro.forma', label: 'Face shape' },
-  { path: 'ojos.forma', label: 'Eye shape' },
-  { path: 'cejas.tipo', label: 'Eyebrow type' },
-  { path: 'nariz.forma', label: 'Nose shape' },
-  { path: 'boca.labios', label: 'Lip type' },
+  { path: 'face.shape', label: 'Face shape' },
+  { path: 'eyes.shape', label: 'Eye shape' },
+  { path: 'eyebrows.type', label: 'Eyebrow type' },
+  { path: 'nose.shape', label: 'Nose shape' },
+  { path: 'mouth.lips', label: 'Lip type' },
 ];
 
 const getValue = (obj: any, path: string) => {

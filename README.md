@@ -1,62 +1,66 @@
-# Generador de Rostros por Descripción Hablada  
+# Face Generator from Spoken Descriptions
+
 **Next.js + Speech-to-Text + Wolfram NLP + Gemini**
 
-Este proyecto es un **generador de rostros** que recibe **descripciones habladas de personas**, las procesa mediante técnicas de **transformación de voz a texto**, **análisis en lenguaje natural**, y finalmente produce un **retrato dibujado** construido a partir de inteligencia artificial.
+This project turns spoken descriptions of people into AI-generated portrait sketches. It captures voice input, converts it to text, extracts physical traits with Wolfram Language NLP, and builds a structured prompt to generate an image with Gemini.
 
-Su flujo completo va desde la voz del usuario → texto → extracción de rasgos → generación del rostro.
-
----
-
-## Características principales
-
-- **Entrada por voz** usando reconocimiento de voz.
-- **Conversión voz → texto** integrada en el front-end.
-- **Análisis del texto** y extracción de rasgos físicos con Wolfram Language (NLP).
-- **Generación de JSON estructurado** con las características detectadas.
-- **Generación del rostro** usando **Gemini 3.0**.
-- **Interfaz moderna** construida con Next.js.
-- Flujo optimizado: voz → texto → JSON → retrato con estilo artístico.
+End-to-end flow: voice input -> text -> trait extraction -> JSON -> artistic portrait.
 
 ---
 
-## Tecnologías utilizadas
+## Key Features
 
-### **Frontend**
+- Voice input using browser speech recognition.
+- Speech-to-text integrated in the front end.
+- Text analysis and physical trait extraction with Wolfram Language (NLP).
+- Structured JSON generation for detected traits.
+- Portrait generation with Gemini 3.0.
+- Modern interface built with Next.js.
+
+---
+
+## Tech Stack
+
+### Frontend
 - Next.js
 - React
 - Speech-to-Text
 - TailwindCSS
 
-### **Backend / Procesamiento**
-- Wolfram:
+### Backend / Processing
+- Wolfram Language:
   - TextCases
   - Entity extraction
-  - NLP para rasgos físicos
-  - Exportación de JSON
-- Gemini 3.0 (es necesaria una clave de API de Gemini)
+  - NLP for physical traits
+  - JSON export
+- Gemini 3.0 (requires a Gemini API key)
 
-## Instalación
+---
 
-### 1. Clonar el repositorio
+## Installation
 
+1) Clone the repository
 ```bash
 git clone https://github.com/Antxnszn/hackathon-UPIITA.git
-cd hackathon-UPIITA 
+cd hackathon-UPIITA
 ```
-### 2. Instalar dependencias (node/Next.js)
-```
+
+2) Install dependencies (Node/Next.js)
+```bash
 npm i
 npm i next
 npm i react
 npm i --save-dev typescript @types/react @types/node
 ```
-### 3. Ejecutar el entorno
-```
+
+3) Run the development server
+```bash
 npm run dev
 ```
----
-## Nota
-Es importante tener en cuenta que se debe tener una API_KEY previamente adquirida y ponerla en un archivo .env.local bajo el nombre de GEMINI_API_KEY={LLENAR CON TU API}. Puedes obtenerla desde: https://aistudio.google.com/, en el apartado de generación de imagen. 
-Te pedirá una cuenta bancaria, pero se te otorgarán créditos completamente gratuitos de prueba.
 
-Debido a cómo funciona la tecnología Speech-to-Text de Next.js, el proyecto necesita ejecutarse en el navegador Chrome para funcionar correctamente con todos sus componentes.
+---
+
+## Notes
+
+- Set an environment variable in `.env.local`: `GEMINI_API_KEY={YOUR_API_KEY}`. You can obtain a free trial key at https://aistudio.google.com/ under Image Generation (a payment method may be required for verification).
+- Due to how Next.js speech-to-text works, the project should be run in Chrome for full compatibility.

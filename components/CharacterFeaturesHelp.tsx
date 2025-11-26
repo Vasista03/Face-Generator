@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const CharacterFeaturesHelp = () => {
-  // Datos completos basados en tu código Wolfram (Anteriores + Nuevos)
+  // Full feature list based on the Wolfram code (previous + new)
   const featureGroups = [
     {
       category: "Face and Skin",

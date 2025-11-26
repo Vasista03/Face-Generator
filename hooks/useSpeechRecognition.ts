@@ -26,7 +26,7 @@ export const useSpeechRecognition = () => {
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = "es-ES";
+      recognitionRef.current.lang = "en-US";
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       recognitionRef.current.onresult = (event: any) => {
@@ -48,9 +48,7 @@ export const useSpeechRecognition = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       recognitionRef.current.onerror = (event: any) => {
         console.error("Speech recognition error:", event.error);
-        setError(
-          "Error en el reconocimiento de voz: " + (event.error ?? "")
-        );
+        setError("Speech recognition error: " + (event.error ?? ""));
         setIsListening(false);
       };
 
@@ -59,7 +57,7 @@ export const useSpeechRecognition = () => {
       };
     } else {
       setHasRecognitionSupport(false);
-      setError("El navegador no soporta reconocimiento de voz nativo.");
+      setError("Native speech recognition is not supported by this browser.");
     }
   }, []);
 
